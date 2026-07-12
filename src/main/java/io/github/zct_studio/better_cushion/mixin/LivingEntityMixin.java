@@ -21,6 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
 
+@SuppressWarnings("resource")
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {
     @ModifyVariable(
