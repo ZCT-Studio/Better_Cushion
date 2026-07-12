@@ -1,0 +1,30 @@
+{
+	"schemaVersion": 1,
+	"id": "better-minecraft-cushion",
+	"version": "${version}",
+	"name": "Better Minecraft Cushion",
+	"description": "Better Minecraft Cushion improves vanilla cushions by adding physical collision, soft landing, bounce effects, and immersive particle and sound effects.",
+	"authors": [
+		"WJiangzhi",
+		"TingIA"
+	],
+	"contributors": [
+		"ZCT Studio"
+	],
+	"contact": {
+		"homepage": "https://modrinth.com/mod/Better_Minecraft_Cushion",
+		"sources": "https://github.com/ZCT-Studio/Better_Minecraft_Cushion"
+	},
+	"license": "MIT",
+	"icon": "assets/better-minecraft-cushion/icon.png",
+	"environment": "*",
+	"mixins": [
+		"better-minecraft-cushion.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.19.3",
+		"minecraft": ">=26.3-alpha.3",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}
