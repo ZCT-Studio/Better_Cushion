@@ -29,7 +29,7 @@ public abstract class LivingEntityMixin {
             argsOnly = true,
             name = "damageModifier"
     )
-    private float causeFallDamage$(float damageModifier) {
+    private float causeFallDamage$_damageModifier(float damageModifier) {
         LivingEntity entity = (LivingEntity)(Object)this;
 
         if (hasCushion(entity)) {
@@ -43,7 +43,7 @@ public abstract class LivingEntityMixin {
             method = "causeFallDamage",
             at = @At("HEAD")
     )
-    private void $$causeFallDamage(
+    private void causeFallDamage$(
             double fallDistance,
             float damageModifier,
             DamageSource damageSource,
