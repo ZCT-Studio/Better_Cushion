@@ -1,6 +1,6 @@
-# Better Minecraft Cushion
+# Better Cushion
 
-Better Minecraft Cushion enhances the vanilla Cushion experience by adding more physical interactions and realistic behaviors.
+Better Cushion enhances the vanilla Cushion experience by adding more physical interactions and realistic behaviors.
 
 ## Features
 
