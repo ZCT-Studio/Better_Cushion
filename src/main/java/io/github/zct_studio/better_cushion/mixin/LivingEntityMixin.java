@@ -1,4 +1,4 @@
-package io.github.zct_studio.better_minecraft_cushion.mixin;
+package io.github.zct_studio.better_cushion.mixin;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.Cushion;
