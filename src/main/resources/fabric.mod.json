@@ -13,7 +13,8 @@
 	],
 	"contact": {
 		"homepage": "https://modrinth.com/mod/Better_Cushion",
-		"sources": "https://github.com/ZCT-Studio/Better_Cushion"
+		"sources": "https://github.com/ZCT-Studio/Better_Cushion",
+		"issues": "https://github.com/ZCT-Studio/Better_Cushion/issues"
 	},
 	"license": "MIT",
 	"icon": "assets/better-cushion/icon.png",

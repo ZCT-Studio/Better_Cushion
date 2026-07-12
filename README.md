@@ -1,9 +1,20 @@
 # Better Minecraft Cushion
 
-## Setup
+Better Minecraft Cushion enhances the vanilla Cushion experience by adding more physical interactions and realistic behaviors.
 
-For setup instructions, please see the [Fabric Documentation page](https://docs.fabricmc.net/develop/getting-started/creating-a-project#setting-up) related to the IDE that you are using.
+## Features
 
-## License
+- Adds collision support for cushions
+- Reduces fall damage when landing on cushions
+- Adds bouncing effects when falling onto cushions
+- Plays cushion sounds when interacting with them
+- Adds colored wool particles based on cushion color
 
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+This mod aims to make cushions feel more interactive while keeping the original Minecraft style.
+
+## Compatibility
+
+- Fabric Loader
+- Minecraft 26.3(26.3-snapshot-3)+
+
+No configuration is required. Just install the mod and enjoy enhanced cushions!
