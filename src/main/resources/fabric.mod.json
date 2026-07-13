@@ -1,9 +1,9 @@
 {
 	"schemaVersion": 1,
-	"id": "better-cushion",
+	"id": "better_cushion",
 	"version": "${version}",
 	"name": "Better Cushion",
-	"description": "Better Cushion improves vanilla cushions by adding physical collision, soft landing, bounce effects, and immersive particle and sound effects.",
+	"description": "Better Cushion improves cushions by adding physical collision, soft landing, bounce effects, and immersive particle and sound effects.",
 	"authors": [
 		"WJiangzhi",
 		"TingIA"
@@ -17,10 +17,10 @@
 		"issues": "https://github.com/ZCT-Studio/Better_Cushion/issues"
 	},
 	"license": "MIT",
-	"icon": "assets/better-cushion/icon.png",
+	"icon": "icon.png",
 	"environment": "*",
 	"mixins": [
-		"better-cushion.mixins.json"
+		"better_cushion.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.19.3",
