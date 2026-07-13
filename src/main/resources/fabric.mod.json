@@ -3,7 +3,7 @@
 	"id": "better_cushion",
 	"version": "${version}",
 	"name": "Better Cushion",
-	"description": "Better Cushion improves vanilla cushions by adding physical collision, soft landing, bounce effects, and immersive particle and sound effects.",
+	"description": "Better Cushion improves cushions by adding physical collision, soft landing, bounce effects, and immersive particle and sound effects.",
 	"authors": [
 		"WJiangzhi",
 		"TingIA"

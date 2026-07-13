@@ -16,7 +16,7 @@ This mod aims to make cushions feel more interactive while keeping the original 
 
 - Fabric/NeoForge Loader
 - Minecraft 26.3(26.3-snapshot-3)+
-- Minecraft 1.21.1, 1.21.11, 26.1.2, 26.2 (Need [Cushion Backport](https://modrinth.com/mod/cushions-backport)
+- Minecraft 1.21.1, 1.21.11, 26.1.2, 26.2 (Need [Cushion Backport](https://modrinth.com/mod/cushions-backport))
 
 No configuration is required. Just install the mod and enjoy enhanced cushions!
 
