@@ -10,4 +10,4 @@ pluginManagement {
 }
 
 // Should match your modid
-rootProject.name = 'better-cushion'
+rootProject.name = 'better_cushion'
