@@ -1,16 +1,16 @@
 package io.github.zct_studio.better_cushion.mixin;
 
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.decoration.Cushion;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Block;
-
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -19,16 +19,20 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
+import java.util.function.Supplier;
 
 @SuppressWarnings("resource")
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {
+    @SuppressWarnings("ModifyVariableMayUseName")
     @ModifyVariable(
             method = "causeFallDamage",
             at = @At("HEAD"),
-            argsOnly = true,
-            name = "damageModifier"
+            argsOnly = true
     )
     private float causeFallDamage$_damageModifier(float damageModifier) {
         LivingEntity entity = (LivingEntity)(Object)this;
@@ -54,7 +58,7 @@ public abstract class LivingEntityMixin {
         LivingEntity entity =
                 (LivingEntity)(Object)this;
 
-        Cushion cushion = getCushion(entity);
+        Entity cushion = getCushion(entity);
 
         if (!entity.level().isClientSide()
                 && cushion != null) {
@@ -80,23 +84,30 @@ public abstract class LivingEntityMixin {
     }
 
     @Unique
+    private boolean isCushion(Object entity) {
+        return entity.getClass().getName()
+                .equals("com.leclowndu93150.cushionbackport.entity.Cushion");
+    }
+
+    @Unique
     private boolean hasCushion(LivingEntity entity) {
         AABB feetBox =
                 entity.getBoundingBox()
                         .move(0, -0.2, 0)
                         .inflate(0.1);
-        List<Cushion> cushions =
+        List<Entity> cushions =
                 entity.level()
-                        .getEntitiesOfClass(
-                                Cushion.class,
-                                feetBox
+                        .getEntities(
+                                entity,
+                                feetBox,
+                                this::isCushion
                         );
 
         return !cushions.isEmpty();
     }
 
     @Unique
-    private Cushion getCushion(LivingEntity entity) {
+    private Entity getCushion(LivingEntity entity) {
         AABB feetBox =
                 entity.getBoundingBox()
                         .move(0, -0.2, 0)
@@ -104,8 +115,9 @@ public abstract class LivingEntityMixin {
 
         return entity.level()
                 .getEntitiesOfClass(
-                        Cushion.class,
-                        feetBox
+                        Entity.class,
+                        feetBox,
+                        this::isCushion
                 )
                 .stream()
                 .findFirst()
@@ -113,9 +125,71 @@ public abstract class LivingEntityMixin {
     }
 
     @Unique
+    private static Method getColorMethod;
+
+    static {
+        try {
+            Class<?> clazz = Class.forName(
+                    "com.leclowndu93150.cushionbackport.entity.Cushion"
+            );
+
+            getColorMethod = clazz.getMethod("getColor");
+
+        } catch (Exception ignored) {
+        }
+    }
+
+    @Unique
+    private static SoundEvent getCushionSitSound() {
+        try {
+            Class<?> clazz = Class.forName(
+                    "com.leclowndu93150.cushionbackport.registry.CBSounds"
+            );
+
+            Field field = clazz.getField("CUSHION_SIT");
+
+            Supplier<?> supplier = (Supplier<?>) field.get(null);
+
+            return (SoundEvent) supplier.get();
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Unique
+    private Block WoolColored(DyeColor color) {
+        Block wool = null;
+        //? if >=26.2 {
+        // wool = Blocks.WOOL.pick(color);
+        //? } else {
+        /*wool = switch (color) {
+            case WHITE -> Blocks.WHITE_WOOL;
+            case ORANGE -> Blocks.ORANGE_WOOL;
+            case MAGENTA -> Blocks.MAGENTA_WOOL;
+            case LIGHT_BLUE -> Blocks.LIGHT_BLUE_WOOL;
+            case YELLOW -> Blocks.YELLOW_WOOL;
+            case LIME -> Blocks.LIME_WOOL;
+            case PINK -> Blocks.PINK_WOOL;
+            case GRAY -> Blocks.GRAY_WOOL;
+            case LIGHT_GRAY -> Blocks.LIGHT_GRAY_WOOL;
+            case CYAN -> Blocks.CYAN_WOOL;
+            case PURPLE -> Blocks.PURPLE_WOOL;
+            case BLUE -> Blocks.BLUE_WOOL;
+            case BROWN -> Blocks.BROWN_WOOL;
+            case GREEN -> Blocks.GREEN_WOOL;
+            case RED -> Blocks.RED_WOOL;
+            case BLACK -> Blocks.BLACK_WOOL;
+        };
+        *///? }
+
+        return wool;
+    }
+
+    @Unique
     private void onCushionEffect(
             LivingEntity entity,
-            Cushion cushion,
+            Entity cushion,
             double fallDistance
     ) {
 
@@ -127,30 +201,43 @@ public abstract class LivingEntityMixin {
                 40
         );
 
-        Block wool = Blocks.WOOL.pick(cushion.getColor());
+        Block wool = null;
 
-        level.sendParticles(
-                new BlockParticleOption(
-                        ParticleTypes.BLOCK,
-                        wool.defaultBlockState()
-                ),
-                cushion.getX(),
-                cushion.getY(0.6),
-                cushion.getZ(),
-                count,
-                0.25,
-                0.05,
-                0.25,
-                0.05
-        );
+        try {
+            wool = WoolColored((DyeColor) getColorMethod.invoke(cushion));
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            //noinspection CallToPrintStackTrace
+            e.printStackTrace();
+        }
 
-        level.playSound(
-                null,
-                cushion.blockPosition(),
-                SoundEvents.CUSHION_SIT,
-                cushion.getSoundSource(),
-                1.0F,
-                1.0F
-        );
+        if (wool != null) {
+            level.sendParticles(
+                    new BlockParticleOption(
+                            ParticleTypes.BLOCK,
+                            wool.defaultBlockState()
+                    ),
+                    cushion.getX(),
+                    cushion.getY(0.6),
+                    cushion.getZ(),
+                    count,
+                    0.25,
+                    0.05,
+                    0.25,
+                    0.05
+            );
+        }
+
+        var SoundEvents$CUSHION_SIT = getCushionSitSound();
+
+        if (SoundEvents$CUSHION_SIT != null) {
+            level.playSound(
+                    null,
+                    cushion.blockPosition(),
+                    getCushionSitSound(),
+                    cushion.getSoundSource(),
+                    1.0F,
+                    1.0F
+            );
+        }
     }
 }
